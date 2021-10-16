@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Calculate the carbon footprint of your trip</h2>
+
+<form >
+  Transport Mode:  <select id="tmode" >
+  <option>Car</option>
+  <option>Electric Car</option>
+  <option>Train</option>
+  <option>Flight</option>
+</select><br>
+
+  Distance: <input type="number" name="dist" id="dist" ><br>
+  Passengers: <input type="number" name="pass" id="pass" > <br>
+  <input type="button" onclick="formtoFP()" value="Calculate">
+  
+</form>
+
+<p id="demo"></p>         
+
+<script>
+
+// get the values from the form and pass them to the transportFP, and print result 
+
+function formtoFP() {
+
+ let form = document.querySelector("form")
+
+var x = transportFP(document.getElementById('tmode').value, document.getElementById('dist').value, document.getElementById('pass').value);
+
+document.getElementById("demo").innerHTML = x.toFixed(0) + ' kg of CO2';
+
+}
+
+
+// this is a standard function to calculate the footprint of a trip. Should become a separate js file
+
+function transportFP( transportMode, distance, people) {
+
+      // these values are static, which may be a problem since we do not let the user enter their actual car fp
+
+var combCarFP = 8.8, elecCarFP = 0.2, trainFP = 0.2, shortFlightFP = 12, longFlightFP = 15, FP = 0;
+
+
+     //switch to set the co2 rate per km depending on transport mode. for plane two rates depending on distance. For car we divide by number of people
+
+switch (transportMode) {
+  case 'Car':
+    FP = combCarFP/people;
+    break;
+  case 'Electric Car':
+    FP = elecCarFP/people;
+    break;
+  case 'Train':
+    FP = trainFP;
+    break;
+  case 'Flight':
+    if (distance < 3000) {FP = shortFlightFP} else {FP = longFlightFP};
+ }
+
+// the function returns the total footprint in kg
+
+return FP * distance;
+
+}
+
+
+
+
+
+</script>
+
+</body>
+</html>
